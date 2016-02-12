@@ -1,0 +1,3 @@
+i am a file
+i have some data
+goodbye
