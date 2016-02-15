@@ -1,3 +1,5 @@
+module EveryOther where
+
 {-
 meant to be loaded into ghci, like:
 $ ghci every_other.hs
