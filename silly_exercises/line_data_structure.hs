@@ -33,9 +33,15 @@ makeLine lineLI = Line (intercalate " " lineLI)
 fancyLineList :: [Line]
 fancyLineList = map makeLine lineList
 
+getLineLength :: Line -> Int
+getLineLength (Line _ _ _ len) = len
+
 {-
 $ fancyLineList
 [Line "this is the first line" "this" "line" 5,
  Line "and this the second" "and" "second" 4,
  Line "there is a third" "there" "third" 4]
+
+$ getLineLength $ head fancyLineList 
+5
 -}
