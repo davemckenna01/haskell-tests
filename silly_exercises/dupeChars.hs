@@ -19,15 +19,16 @@ contains1 x (y:ys)
 
 -- O(log n) ?
 
-chars :: Map Char Bool
-chars = Map.empty
+hasDupes' :: [Char] -> Map Char Bool -> Bool -> Maybe Bool
+hasDupes' []     _     _     = Just False
+hasDupes' _      _     True  = Just True
+hasDupes' (x:xs) chars _
+    | Map.lookup x chars == Nothing = hasDupes' xs (Map.insert x True chars) False
+    | otherwise                     = hasDupes' xs  Map.empty                True
 
-hasDupes' :: [Char] -> Maybe Bool
-hasDupes' [] = Just False
-hasDupes' (x:xs) =
-    if Map.lookup x chars == Nothing
-        then Nothing
-    else
-        Map.insert x True chars;
+--chars :: Map Char Bool
+--chars = Map.empty
+
+dupes = hasDupes' "dave" Map.empty False
 
 
