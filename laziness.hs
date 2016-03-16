@@ -50,6 +50,7 @@ if it needs to.
                        = Cons 1 (Cons 1 Empty)
  -}
 
+--{-
 map' f []     = []
 map' f (x:xs) = (f x) : map' f xs
 
@@ -57,16 +58,16 @@ map'' f Empty       = Empty
 map'' f (Cons x xs) = Cons (f x) (map'' f xs)
 
 
-> map (+1) ones''
-> map (+1) (Cons 1 ones'')
-  map'' f  (Cons x xs) = Cons (f x) (map'' f xs)
-                       = Cons (+ 1 1) (map'' (+1) (Cons 1 ones''))
+> map'' (+1) ones''
+> map'' (+1) (Cons 1 ones'')
+  map'' f    (Cons x xs)     = Cons (f x) (map'' f xs)
+                             = Cons (+ 1 1) (map'' (+1) (Cons 1 ones''))
 
 
-two_incrs = take'' 2 . map (+1)
+two_incrs = take'' 2 . map'' (+1)
 
 > two_incrs ones''
-> take'' 2 ( map (+1) ones'' )
+> take'' 2 ( map'' (+1) ones'' )
 > take'' 2 ( Cons (+ 1 1) (map'' (+1) (Cons 1 ones'')) )
   take'' n ( Cons x xs) = Cons x       ( take'' (n-1) xs )
                         = Cons (+ 1 1) ( take'' (2-1) (map'' (+1) (Cons 1 ones'')) )
@@ -74,7 +75,7 @@ two_incrs = take'' 2 . map (+1)
                         = Cons (2)     ( Cons (+ 1 1) ( take'' (1-1) (map'' (+1) (Cons 1 ones'')) ) )
                         = Cons (2)     ( Cons (2)     ( take'' (0)   Cons (+ 1 1) (map'' (+1) (Cons 1 ones'')) ) )
                         = Cons (2)     ( Cons (2)     ( Empty ) )
-
+-- -}
 
 
 
