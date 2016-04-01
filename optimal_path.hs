@@ -38,8 +38,6 @@ type RoadNetwork = [Section]
 data Label = A | B | C deriving (Show)
 type Path = [(Label, Int)]
 
--- an atomic operation we'll need is taking a section and returning the best
--- paths to the A and B intersections in that section.
 
 -- we want to consume the road network form left to right, and accumulate
 -- the best path as we go. This smells like a fold! So lets define a binary
