@@ -73,4 +73,67 @@ six = (\x y z -> x + y + z) <$> Just 1 <*> Just 2 <*> Just 3
 -- JUST SQUINT AND MELT AWAY THE <> AND THE $s *s AND Justs:
 (\x y z -> x + y + z) <$> Just 1 <*> Just 2 <*> Just 3   == squint ==>  (\x y z -> x + y + z) 1 2 3
 
+-- now, FUNCTIONS as applicatives
+
+instance Applicative ((->) r) where  
+    pure x = (\_ -> x)  
+    f <*> g = \x -> f x (g x)  
+
+-- let's get warmed up with fns as functors refresher
+mult_fst_then_add_snd = fmap (+) (*2)
+                      = (\x -> (+) ((*2) x))
+mult_fst_then_add_snd 2 3
+= (\x -> (+) ((*2) x)) 2 3
+= (+) ((*2) 2) 3
+
+fn = (+) <$> (+3) <*> (*100)
+   = (\x -> (+) ((+3) x)) <*> (*100)
+   = \y -> (\x -> (+) ((+3) x)) y ((*100) y) 
+fn 5
+= (+) ((+3) 5) ((*100) 5)
+= 508
+
+-- another cool example:
+(\x y z -> [x,y,z]) <$> (+3) <*> (*2) <*> (/2) $ 5  
+= [8.0,10.0,2.5]  
+
+-- lifts elevate a normal function to work with two applicatives, hiding the applicative style.
+-- So the fn above could instead be:
+fn = liftA2 (+) (+3) (*100)
+fn 5
+> 508
+
+-- check out this awesome sauce:
+liftA2 (:) (Just 3) (Just [4])  
+> Just [3,4]  
+
+-- because (:) 3 [4] = [3,4]... i.e. 3:[4]
+-- We can extend this like so:
+
+sequenceA :: (Applicative f) => [f a] -> f [a]  
+sequenceA = foldr (liftA2 (:)) (pure [])  
+
+sequenceA [Just 1, Just 2]
+> Just [1,2]
+
+sequenceA [Just 1, Nothing, Just 3]
+> Nothing
+
+-- in this case sequence makes a function that takes a parameter and feeds it
+-- to all of the functions in the list. 
+
+fn :: Int -> [Int]
+fn = sequenceA [(+3),(+2),(+1)]
+
+sequenceA [(+3),(+2),(+1)] 3  
+> [6,5,4]  
+
+sequenceA [(>4),(<10),odd] 7  
+[True,True,True] 
+
+sequenceA [getLine, getLine, getLine]  
+heyh  
+ho  
+woo  
+["heyh","ho","woo"]  
 
