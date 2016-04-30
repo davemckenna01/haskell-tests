@@ -35,5 +35,40 @@ foo = do
 -- simply return a vanilla value from the block, we'd never know if anything
 -- failed.
 
-bindIsh :: Monad m => m a -> (a -> b) -> b
-bindIsh (Just x) f = f x
+--------------------------------------------------------------------------------
+-- The following illustrates how putting a Nothing on it's own line in a do
+-- block "throws a wrench"
+
+-- NOTE! This Pole stuff below won't make sense without looking at the example
+-- here: http://learnyouahaskell.com/a-fistful-of-monads#walk-the-line
+
+routine :: Maybe Pole  
+routine = do  
+    start <- return (0,0)  
+    first <- landLeft 2 start  
+    Nothing  
+    second <- landRight 2 first  
+    landLeft 1 second  
+
+-- the above but using binds instead of sugar
+
+routine :: Maybe Pole  
+routine =
+    return (0,0)      >>= (\start -> 
+    landLeft 2 start  >>= (\first -> 
+    -- b/c there's no value to extract like with a Just, we don't name the arg
+    Nothing           >>= (\_ ->
+    landRight 2 first >>= (\second -> 
+    landLeft 1 second ))))
+
+-- the key thing to realize is that >>= is defined such that if the left arg
+-- is ever a Nothing, >>= returns a Nothing. So we short circuit the evaluation
+-- right there and "routine" returns Nothing:
+
+instance Monad Maybe where  
+    return x = Just x  
+    Nothing >>= f = Nothing  
+    Just x >>= f  = f x  
+    fail _ = Nothing  
+
+--------------------------------------------------------------------------------
