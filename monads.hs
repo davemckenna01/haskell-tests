@@ -71,4 +71,18 @@ instance Monad Maybe where
     Just x >>= f  = f x  
     fail _ = Nothing  
 
+
+-- here is the above fully evaluated
+routine :: Maybe Pole  
+routine =
+    return (0,0) >>= (\start -> landLeft 2 start  >>= (\first -> Nothing >>= (\_ -> landRight 2 first >>= (\second -> landLeft 1 second ))))
+    (\start -> landLeft 2 start  >>= (\first -> Nothing >>= (\_ -> landRight 2 first >>= (\second -> landLeft 1 second )))) (0,0)
+    landLeft 2 (0,0) >>= (\first -> Nothing >>= (\_ -> landRight 2 first >>= (\second -> landLeft 1 second ))) 
+    Just (2,0) >>= (\first -> Nothing >>= (\_ -> landRight 2 first >>= (\second -> landLeft 1 second ))) 
+    (\first -> Nothing >>= (\_ -> landRight 2 first >>= (\second -> landLeft 1 second ))) (2,0)
+    Nothing >>= (\_ -> landRight 2 first >>= (\second -> landLeft 1 second ))
+    Nothing
+
+
+
 --------------------------------------------------------------------------------
