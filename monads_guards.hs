@@ -1,3 +1,7 @@
+-- guard is sort of like a way of preventing or allowing a computation to
+-- continue
+
+
 class Monad m where  
     return :: a -> m a  
   
