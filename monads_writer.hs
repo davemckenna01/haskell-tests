@@ -42,3 +42,6 @@ let (y, v') =      (3, "Got number 2.")                                         
 -- final value of the expression is constructed. It works backwards from the 
 -- return statement, first calculating a * b, then appending ""
 -- to "Got number 2.", and then appending that result to "Got number 1."
+
+-- NOTE!!! LYAH teaches writers in a different way than Haskell now implements
+-- them. Read: http://stackoverflow.com/questions/11684321/how-to-play-with-control-monad-writer-in-haskell
