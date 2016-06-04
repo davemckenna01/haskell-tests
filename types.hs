@@ -61,6 +61,30 @@ customerToInt (CustomerId i) = i
 -- this pattern matches a customer id which was created by calling the
 -- MakeCustomerId constructor
 
+
+-- Newtypes are also useful for creating different monoid instances for the 
+-- same type of value. E.g. an int can be mappended in a sum fashion, a product
+-- fashion, etc.
+
+newtype Product a = Product { getProduct :: a }
+    deriving (Eq, Ord, Read, Show, Bounded)
+
+instance Num a => Monoid (Product a) where
+    mempty = Product 1
+    Product x `mappend` Product y = Product (x * y)
+
+-- and...
+
+newtype Sum a = Sum { getSum :: a }
+    deriving (Eq, Ord, Read, Show, Bounded)
+
+instance Num a => Monoid (Sum a) where
+    mempty = Sum 0
+    Sum x `mappend` Sum y = Sum (x + y)
+
+-- why newtype is different from data, I'm not sure. But this tells you:
+-- http://learnyouahaskell.com/functors-applicative-functors-and-monoids#the-newtype-keyword
+
 -- ----------------------------------------------
 -- ----------------------------------------------
 -- Algebraic Data Types
