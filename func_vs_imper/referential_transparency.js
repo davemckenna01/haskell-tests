@@ -18,7 +18,7 @@ incr (1)
 
 1 + 2
 
-// if y is changed
+// if y is changed.
 
 // By allowing mutable state, we've destroyed purity, which
 // destroys referential transparency.
