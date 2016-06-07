@@ -26,3 +26,6 @@ a ++ (b ++ c) -- 4 steps
 "a" : ["b"] ++ ["c"]
 "a" : "b" : [] ++ ["c"]
 "a" : "b" : ["c"]
+
+-- One way to guard against accidentally implementing an inefficient list
+-- is to use "Diff lists": http://learnyouahaskell.com/for-a-few-monads-more#writer (scroll down a bit)
