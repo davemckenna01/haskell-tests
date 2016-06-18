@@ -54,3 +54,15 @@ getStdGen
 -- note also that:
 mkStdGen 1653653588
 1653653589 1
+
+-- BUT NOTE THAT getStdGen returns IO StdGen, which is a monad and has to be
+-- worked with monad-style. So you can't do:
+random getStdGen
+-- bc random expects a StdGen, not and IO StdGen
+
+-- so you'd have to do:
+
+showRandom :: IO StdGen -> IO (Int, StdGen)
+showRandom gen = do
+    g <- gen
+    return $ random g
