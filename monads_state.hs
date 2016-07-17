@@ -58,7 +58,10 @@ There's nothing wrong with the use of side-effects, but it's a question of how p
 
 All haskell does is discipline the side effects. So you have to have them in an explicitly written monad. It requires the programmer to think more precisely about programs.
 
-Beckman said he doesn't recommend writing big programs/project in Haskell (yet). And I get the impression these functional principles are not necessarily meant to be used by joe programmer, but instead used under the hood in runtimes or whatever. Maybe?
+Beckman said he doesn't recommend writing big programs/project in Haskell (yet).
+And I get the impression these functional principles are not necessarily meant
+to be used by joe programmer, but instead used under the hood in runtimes or
+whatever. Maybe?
 
 
 Beckman at the end of the video even got in to crazy ideas like writing a program that uses the .net CLR + heap as the state monad that it is
