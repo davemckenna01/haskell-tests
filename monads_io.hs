@@ -13,8 +13,57 @@ stack instead of heap, which is faster I guess?
 --Simplified IO for my little puny mind:
 newtype IO a = IO (Int -> (Int, a))
 
-
+--https://github.com/ghc/ghc/blob/master/libraries/base/System/IO.hs
 getChar :: IO Char
+getChar =  hGetChar stdin
+
+what is "stdin"?
+
+--https://github.com/ghc/ghc/blob/master/libraries/base/GHC/IO/Handle/Text.hs
+hGetChar :: Handle -> IO Char
+hGetChar handle =
+  wantReadableHandle_ "hGetChar" handle $ \handle_@Handle__{..} -> do
+
+  -- buffering mode makes no difference: we just read whatever is available
+  -- from the device (blocking only if there is nothing available), and then
+  -- return the first character.
+  -- See [note Buffered Reading] in GHC.IO.Handle.Types
+  buf0 <- readIORef haCharBuffer
+
+  buf1 <- if isEmptyBuffer buf0
+             then readTextDevice handle_ buf0
+             else return buf0
+
+  (c1,i) <- readCharBuf (bufRaw buf1) (bufL buf1)
+  let buf2 = bufferAdjustL i buf1
+
+  if haInputNL == CRLF && c1 == '\r'
+     then do
+            mbuf3 <- if isEmptyBuffer buf2
+                      then maybeFillReadBuffer handle_ buf2
+                      else return (Just buf2)
+
+            case mbuf3 of
+               -- EOF, so just return the '\r' we have
+               Nothing -> do
+                  writeIORef haCharBuffer buf2
+                  return '\r'
+               Just buf3 -> do
+                  (c2,i2) <- readCharBuf (bufRaw buf2) (bufL buf2)
+                  if c2 == '\n'
+                     then do
+                       writeIORef haCharBuffer (bufferAdjustL i2 buf3)
+                       return '\n'
+                     else do
+                       -- not a \r\n sequence, so just return the \r
+                       writeIORef haCharBuffer buf3
+                       return '\r'
+     else do
+            writeIORef haCharBuffer buf2
+            return c1
+
+what is handle_@Handle__{..}, and what is ANY OF IT?!
+
 
 
 bindIO :: IO a -> (a -> IO b) -> IO b
