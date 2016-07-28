@@ -67,6 +67,19 @@ whatever. Maybe?
 Beckman at the end of the video even got in to crazy ideas like writing a program that uses the .net CLR + heap as the state monad that it is
 and thread it through functions... something like that.
 
+------------
+
+--------------------------------
+And here, some really weird and cool ideas:
+The IO monad is just a state monad where the state is the state of the world.
+
+http://programmers.stackexchange.com/questions/161568/critique-of-the-io-monad-being-viewed-as-a-state-monad-operating-on-the-world
+... refers to:
+https://research.microsoft.com/en-us/um/people/simonpj/papers/marktoberdorf/
+
+--------------------------------
+
+
 -}
 
 -----------------------
