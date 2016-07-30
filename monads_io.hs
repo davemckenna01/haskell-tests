@@ -3,7 +3,19 @@ The reason for makinge IO monadic has nothing to do with it lessening impurity
 and everything to do with ensuring order of IO operations. There's no getting
 around the fact that IO will be impure, b/c it interacts with the outside world
 aka the OS. But, why is IO getting out of order a risk? Is it to do with lazy
-evaluation and compiler optimizations?
+evaluation and compiler optimizations? IORefs (short for REFerence?) might give a clue as to why.
+They represent a mutable cell, and you want to make sure you're reading and
+writing that cell in a certain order, otherwise your algorithm might make no
+sense.
+
+Genius line from http://research.microsoft.com/en-us/um/people/simonpj/papers/marktoberdorf/mark.pdf:
+"In this example, the mutable variable models (part of) the state of the file being written to, by tracking the
+number of characters written to the file. Since THE FILE ITSELF IS, IN EFFECT, AN EXTERNAL MUTABLE VARIABLE, it is
+not surprising that an internal mutable variable is appropriate to model its state."
+
+There's really no difference in the monadic need for working with IORefs (mutable variables)
+vs external files. IT'S THE SAME PATTERN!
+
 -}
 
 
