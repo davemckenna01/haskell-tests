@@ -1,3 +1,12 @@
+{-
+The reason for makinge IO monadic has nothing to do with it lessening impurity
+and everything to do with ensuring order of IO operations. There's no getting
+around the fact that IO will be impure, b/c it interacts with the outside world
+aka the OS. But, why is IO getting out of order a risk? Is it to do with lazy
+evaluation and compiler optimizations?
+-}
+
+
 --IO a really means the following:
 newtype IO a = IO (State# RealWorld -> (# State# RealWorld, a #))
 
