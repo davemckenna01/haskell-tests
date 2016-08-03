@@ -70,7 +70,7 @@ main :: IO ()
 main = getChar >>= (\ch1 -> getChar >>= (\ch2 -> return ()))
      = getChar bindIO (\ch1 -> getChar bindIO (\ch2 -> return ()))
      = bindIO getChar (\ch1 -> bindIO getChar (\ch2 -> return ()))
-     -- || is my silly way of representing the "impure primitive" outside world
+     -- "||"" is my silly way of representing the "impure primitive" outside world
      -- interaction that getChar performs
      = bindIO (IO \world -> (world, ||)) (\ch1 -> bindIO (IO \world -> (world, ||)) ( \ch2 -> IO \world -> (world, ()) ) )
      IO (\ s -> case (\world -> (world, ||)) s of (new_s, a) -> unIO (       (\ch1 -> bindIO (IO \world -> (world, ||)) ( \ch2 -> IO \world -> (world, ()) ) )             a) new_s)
@@ -99,11 +99,11 @@ main = getChar >>= (\ch1 -> getChar >>= (\ch2 -> return ()))
      unIO ( IO \world -> (world, ()) ) 789
      \world -> (world, ()) 789
      (789, ())
-     -- main return s this lonesome useless tuple, now that the program has
+     -- main returns this lonesome useless tuple, now that the program has
      -- finished running. But wait, this doesn't match up with IO (), which
      -- is the type of main. Is it because I discarded IO once main kicked off
      -- with a world int? Even then, the return would be IO (780, ()) which
-     -- seems off. Oh well.
+     -- seems off. Oh well?
 
      -- note that I'm basically guessing at the usage of || and 123 etc,
      -- and also guessing at the order of evaluation. Look in to the reality of
@@ -115,7 +115,8 @@ the State# RealWorld is simply used to preserve statement order:
 "GHC uses impure primitives to implement these IO operations (getChar etc); the State# RealWorld
 "values" are only to stop the compiler reordering statements by introducing data
 dependencies from one statement to the next."
-... it's not actually the entire state of the world! It's just some arbitrary number.
+... it's not actually the entire state of the world! It's just some arbitrary number. And I'm
+not sure if the number changes or not from one impure IO to the next.
 
 Note also:
 The IO monad is not a state monad, despite popular belief. The state monad looks very similar to the type GHC uses for IO. Thus the confusion.

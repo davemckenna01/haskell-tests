@@ -14,7 +14,7 @@ function calculateTax (amt) {
     assholeTax = 10;
 
     amt = amt * (1 + hst);
-    amt = amt + assholeTax;
+    amt = amt + assholeTax; // MUTATING A LOCAL VAR (amt)!! BAD!!
 
     return amt;
 }
