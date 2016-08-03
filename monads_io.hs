@@ -16,6 +16,9 @@ not surprising that an internal mutable variable is appropriate to model its sta
 There's really no difference in the monadic need for working with IORefs (mutable variables)
 vs external files. IT'S THE SAME PATTERN!
 
+Good answer here on "why do we need monads" (not particular to IO):
+http://stackoverflow.com/questions/28139259/why-do-we-need-monads
+
 -}
 
 
