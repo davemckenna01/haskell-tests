@@ -21,4 +21,5 @@ incr (1)
 // if y is changed.
 
 // By allowing mutable state, we've destroyed purity, which
-// destroys referential transparency.
+// destroys referential transparency. And referntial transparency is good
+// b/c you can apply certain compiler optimizations, I think.
