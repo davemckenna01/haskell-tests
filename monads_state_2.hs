@@ -11,10 +11,15 @@ count :: State Int ()
 
 -- OR 
 
-count = countList [1,2,3] >>= \_ -> countList [4,5,6]
+--count = countList [1,2,3] >>= \_ -> countList [4,5,6]
+
+-- OR
+
+-- this does the same thing, only cleaner
+count = countList [1,2,3] >> countList [4,5,6]
 
 --runState count 0
--- becomes ((),6)
+--becomes ((),6)
 
 
 -- sloppy attempt to reduce the expression
@@ -33,4 +38,5 @@ countList' list = state $ \s -> ((), s + length list)
 main = do
     line <- getLine
     print $ runState (countList' line) 0
+    -- prints ((), 3)
 

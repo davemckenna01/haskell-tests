@@ -117,9 +117,18 @@ main = getChar >>= (\ch1 -> getChar >>= (\ch2 -> return ()))
 the State# RealWorld is simply used to preserve statement order:
 "GHC uses impure primitives to implement these IO operations (getChar etc); the State# RealWorld
 "values" are only to stop the compiler reordering statements by introducing data
-dependencies from one statement to the next."
+dependencies from one statement to the next."*
 ... it's not actually the entire state of the world! It's just some arbitrary number. And I'm
 not sure if the number changes or not from one impure IO to the next.
+
+* but, I've read also that case statements are strict in Haskell, and some have
+implied that this is the reason IO is guaranteed to be ordered. I could have
+misunderstood. (http://blog.ezyang.com/2011/05/unraveling-the-mystery-of-the-io-monad/)
+
+
+So in the IO's >>=, is it the usage of case, the usage of State RealWorld, or
+both that ensures order?
+
 
 Note also:
 The IO monad is not a state monad, despite popular belief. The state monad looks very similar to the type GHC uses for IO. Thus the confusion.
